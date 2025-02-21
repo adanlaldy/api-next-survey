@@ -2,6 +2,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Survey = require('../models/Survey');
+const Answer = require('../models/Answer');
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -10,7 +11,11 @@ mongoose.connect(process.env.MONGO_URI, {
     .then(async () => {
         console.log("MongoDB connected for the seed");
 
-        // Exemple de données
+        // Vider les collections avant d'insérer de nouvelles données.
+        await Survey.deleteMany({});
+        await Answer.deleteMany({});
+
+        // Créer un sondage de test.
         const testSurvey = new Survey({
             name: "Sondage Préférences Alimentaires",
             creator: new mongoose.Types.ObjectId(),
@@ -20,8 +25,20 @@ mongoose.connect(process.env.MONGO_URI, {
             ]
         });
 
-        await Survey.deleteMany({});
         await testSurvey.save();
+
+        // Créer un document de réponse associé au sondage.
+        const testAnswer = new Answer({
+            survey_id: testSurvey._id,
+            user_id: new mongoose.Types.ObjectId(),
+            answers: [
+                { question_id: testSurvey.questions[0]._id, answer: "Pizza" },
+                { question_id: testSurvey.questions[1]._id, answer: ["Italienne", "Indienne"] }
+            ]
+        });
+
+        await testAnswer.save();
+
         console.log("Data entered");
         mongoose.connection.close();
     })

@@ -18,7 +18,10 @@ mongoose.connect(process.env.MONGO_URI, {
 
 
 const surveysRoutes = require('./routes/surveys');
+const answersRoutes = require('./routes/answers');
+
 app.use('/api/surveys', surveysRoutes);
+app.use('/api/answers', answersRoutes);
 
 // Démarrer le serveur
 const PORT = process.env.PORT || 3000;
