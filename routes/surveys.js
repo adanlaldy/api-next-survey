@@ -24,6 +24,22 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Get all surveys by user ID
+router.get('/user/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const surveys = await Surveys.find({ creator: userId });
+
+        if (!surveys.length) {
+            return res.status(404).json({ message: 'No surveys found for this user.' });
+        }
+
+        res.json(surveys);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Get survey by id.
 router.get('/:id', async (req, res) => {
     try {
