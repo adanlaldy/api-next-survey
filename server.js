@@ -17,9 +17,11 @@ mongoose.connect(process.env.MONGO_URI, {
     .catch(err => console.error("Connexion error with MongoDB", err));
 
 
+const usersRoutes = require('./routes/users');
 const surveysRoutes = require('./routes/surveys');
 const answersRoutes = require('./routes/answers');
 
+app.use('/api/users', surveysRoutes);
 app.use('/api/surveys', surveysRoutes);
 app.use('/api/answers', answersRoutes);
 

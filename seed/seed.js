@@ -3,6 +3,8 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const Survey = require('../models/Survey');
 const Answer = require('../models/Answer');
+const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -38,6 +40,14 @@ mongoose.connect(process.env.MONGO_URI, {
         });
 
         await testAnswer.save();
+
+
+        const testUser = new User({
+            name: "John Doe",
+            password: await bcrypt.hash("password", 10)
+        });
+
+        await testUser.save();
 
         console.log("Data entered");
         mongoose.connection.close();
