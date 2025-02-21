@@ -2,8 +2,11 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors());
 
 // Middleware pour parser le JSON
 app.use(express.json());
@@ -21,7 +24,7 @@ const usersRoutes = require('./routes/users');
 const surveysRoutes = require('./routes/surveys');
 const answersRoutes = require('./routes/answers');
 
-app.use('/api/users', surveysRoutes);
+app.use('/api/users', usersRoutes);
 app.use('/api/surveys', surveysRoutes);
 app.use('/api/answers', answersRoutes);
 
